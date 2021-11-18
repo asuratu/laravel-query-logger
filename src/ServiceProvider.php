@@ -15,6 +15,7 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Illuminate\Support\Str;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -48,8 +49,14 @@ class ServiceProvider extends LaravelServiceProvider
             if (count($bindings) > 0) {
                 $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
             }
-            Log::channel(config('logging.query.channel', config('logging.default')))
-                ->debug(sprintf('[%s] [%s] %s | %s: %s', $query->connection->getDatabaseName(), $duration, $realSql,
+
+            if (Str::contains($realSql, config('logging.query.admin_str'))) {
+                $channel = config('logging.query.admin_channel', config('logging.default'));
+            } else {
+                $channel = config('logging.query.channel', config('logging.default'));
+            }
+
+            Log::channel($channel)->debug(sprintf('[%s] [%s] %s | %s: %s', $query->connection->getDatabaseName(), $duration, $realSql,
                 request()->method(), request()->getRequestUri()));
         });
     }

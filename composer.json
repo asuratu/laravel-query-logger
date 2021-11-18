@@ -1,5 +1,5 @@
 {
-    "name": "overtrue/laravel-query-logger",
+    "name": "asuratu/laravel-query-logger",
     "description": "A dev tool to log all queries for laravel application.",
     "type": "library",
     "require": {
