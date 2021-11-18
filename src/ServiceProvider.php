@@ -57,7 +57,7 @@ class ServiceProvider extends LaravelServiceProvider
 
             $requestUri = request()->getRequestUri();
 
-            if (Str::contains($realSql, config('logging.query.admin_str')) || Str::startsWith($requestUri, '/admin')) {
+            if (Str::contains($realSql, config('logging.query.admin_str'))) {
                 $channel = config('logging.query.admin_channel', config('logging.default'));
             } else {
                 $channel = config('logging.query.channel', config('logging.default'));
