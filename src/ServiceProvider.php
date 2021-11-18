@@ -50,6 +50,11 @@ class ServiceProvider extends LaravelServiceProvider
                 $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
             }
 
+            // 忽略的日志
+            if (Str::contains($realSql, config('logging.query.ignore_sql'))){
+                return;
+            }
+
             $requestUri = request()->getRequestUri();
 
             if (Str::contains($realSql, config('logging.query.admin_str')) || Str::startsWith($requestUri, '/admin')) {
