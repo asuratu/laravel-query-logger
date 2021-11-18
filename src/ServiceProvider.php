@@ -50,14 +50,15 @@ class ServiceProvider extends LaravelServiceProvider
                 $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
             }
 
-            if (Str::contains($realSql, config('logging.query.admin_str'))) {
+            $requestUri = request()->getRequestUri();
+
+            if (Str::contains($realSql, config('logging.query.admin_str')) || Str::startsWith($requestUri, '/admin')) {
                 $channel = config('logging.query.admin_channel', config('logging.default'));
             } else {
                 $channel = config('logging.query.channel', config('logging.default'));
             }
 
-            Log::channel($channel)->debug(sprintf('[%s] [%s] %s | %s: %s', $query->connection->getDatabaseName(), $duration, $realSql,
-                request()->method(), request()->getRequestUri()));
+            Log::channel($channel)->debug(sprintf('[%s] [%s] %s | %s: %s', $query->connection->getDatabaseName(), $duration, $realSql, request()->method(), $requestUri));
         });
     }
 
