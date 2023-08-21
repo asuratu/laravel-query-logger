@@ -3,7 +3,7 @@
     "description": "A dev tool to log all queries for laravel application.",
     "type": "library",
     "require": {
-        "laravel/framework": "~5.5||~6.0||~7.0||~8.0"
+        "laravel/framework": "^9.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,14 +34,10 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "cghooks update"
         ],
         "post-merge": "composer install",
         "post-install-cmd": [
-            "cghooks add --ignore-lock",
-            "cghooks update"
         ],
-        "cghooks": "vendor/bin/cghooks",
         "check-style": "php-cs-fixer fix --using-cache=no --diff --config=.php_cs --dry-run --ansi",
         "fix-style": "php-cs-fixer fix --using-cache=no --config=.php_cs --ansi",
         "test": "vendor/bin/phpunit --colors=always"

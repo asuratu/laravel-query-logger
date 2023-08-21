@@ -1,18 +1,8 @@
 <?php
 
-/*
- * This file is part of the overtrue/laravel-query-logger.
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Overtrue\LaravelQueryLogger;
 
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Illuminate\Support\Str;
@@ -22,7 +12,7 @@ class ServiceProvider extends LaravelServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if (!$this->app['config']->get('logging.query.enabled', false)) {
             return;
@@ -76,22 +66,19 @@ class ServiceProvider extends LaravelServiceProvider
 
     /**
      * @param string $trigger
-     *
      * @return bool
      */
-    public function requestHasTrigger($trigger)
+    public function requestHasTrigger(string $trigger): bool
     {
-        return false !== getenv($trigger) || \request()->hasHeader($trigger) || \request()->has($trigger) || \request()->hasCookie($trigger);
+        return false !== getenv($trigger) || request()->hasHeader($trigger) || request()->has($trigger) || request()->hasCookie($trigger);
     }
 
     /**
      * Format duration.
-     *
-     * @param  float  $seconds
-     *
+     * @param float $seconds
      * @return string
      */
-    private function formatDuration($seconds)
+    private function formatDuration(float $seconds): string
     {
         if ($seconds < 0.001) {
             return round($seconds * 1000000).'μs';
