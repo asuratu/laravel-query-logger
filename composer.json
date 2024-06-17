@@ -3,7 +3,7 @@
     "description": "A dev tool to log all queries for laravel application.",
     "type": "library",
     "require": {
-        "laravel/framework": "^9.0"
+        "laravel/framework": "^9.0 || ^11.0"
     },
     "autoload": {
         "psr-4": {
